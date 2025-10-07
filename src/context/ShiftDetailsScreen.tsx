@@ -13,7 +13,7 @@ interface Props {
     route: ShiftDetailsScreenRouteProp;
 }
 
-const ShiftDetailsScreen: React.FC<Props> = ({route}) => {
+const ShiftDetailsScreen: React.FC<any> = ({route}) => {
     const {shift} = route.params;
 
     return (
