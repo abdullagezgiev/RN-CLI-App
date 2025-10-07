@@ -1,45 +1,32 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import { View, Text } from 'react-native'
+import React from 'react'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { NavigationContainer } from '@react-navigation/native';
+import ShiftListScreen from './src/screens/ShiftListScreen';
+import ShiftDetailsScreen from './src/screens/ShiftDetailsScreen';
+import { ShiftProvider } from './src/screens/ShiftContext';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+const Stack = createNativeStackNavigator();
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
+function App(): React.JSX.Element {
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
+    <ShiftProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName='ShiftList'>
+          <Stack.Screen
+            name="ShiftList"
+            component={ShiftListScreen}
+            options={{title: 'Доступные смены'}}
+          />
+          <Stack.Screen
+            name="ShiftDetails"
+            component={ShiftDetailsScreen}
+            options={{title: 'Детали смены'}}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+  </ShiftProvider>  
+  )
 }
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;
