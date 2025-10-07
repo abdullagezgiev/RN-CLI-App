@@ -1,43 +1,32 @@
-import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {enableScreens} from 'react-native-screens';
+import React, {useState} from 'react';
+import {View} from 'react-native';
+import {ShiftProvider} from './src/context/ShiftContext';
 import ShiftListScreen from './src/context/ShiftListScreen';
 import ShiftDetailsScreen from './src/context/ShiftDetailsScreen';
-import {ShiftProvider} from './src/context/ShiftContext';
-
-enableScreens(); 
-
-const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
+  const [currentView, setCurrentView] = useState<'list' | 'details'>('list');
+  const [selectedShift, setSelectedShift] = useState<any>(null);
+
+  const showDetails = (shift: any) => {
+    setSelectedShift(shift);
+    setCurrentView('details');
+  };
+
+  const showList = () => {
+    setCurrentView('list');
+    setSelectedShift(null);
+  };
+
   return (
     <ShiftProvider>
-      <NavigationContainer>
-        <Stack.Navigator 
-          initialRouteName="ShiftList"
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: '#f5f5f5',
-            },
-            headerTintColor: '#333',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}
-        >
-          <Stack.Screen 
-            name="ShiftList" 
-            component={ShiftListScreen}
-            options={{title: 'Доступные смены'}}
-          />
-          <Stack.Screen 
-            name="ShiftDetails" 
-            component={ShiftDetailsScreen}
-            options={{title: 'Детали смены'}}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <View style={{flex: 1}}>
+        {currentView === 'list' ? (
+          <ShiftListScreen onShiftPress={showDetails} />
+        ) : (
+          <ShiftDetailsScreen shift={selectedShift} onBack={showList} />
+        )}
+      </View>
     </ShiftProvider>
   );
 }

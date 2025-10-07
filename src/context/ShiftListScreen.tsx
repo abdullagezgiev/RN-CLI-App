@@ -1,7 +1,8 @@
-// src/screens/ShiftListScreen.tsx
 import React, {useEffect} from 'react';
 import {
-  View,Text,FlatList,
+  View,
+  Text,
+  FlatList,
   ActivityIndicator,
   StyleSheet,
   Alert,
@@ -9,11 +10,13 @@ import {
 import {useShift} from '../context/ShiftContext';
 import ShiftListItem from '../context/ShiftListItem';
 import {fetchShifts} from '../services/api';
-import {useNavigation} from '@react-navigation/native';
 
-const ShiftListScreen: React.FC = () => {
+interface Props {
+  onShiftPress: (shift: any) => void;
+}
+
+const ShiftListScreen: React.FC<Props> = ({onShiftPress}) => {
   const {state, dispatch} = useShift();
-  const navigation = useNavigation();
 
   useEffect(() => {
     loadShifts();
@@ -22,10 +25,7 @@ const ShiftListScreen: React.FC = () => {
   const loadShifts = async () => {
     try {
       dispatch({type: 'SET_LOADING', payload: true});
-      
-      // Используем координаты по умолчанию (Москва)
       const shifts = await fetchShifts(55.7558, 37.6173);
-      
       dispatch({type: 'SET_SHIFTS', payload: shifts});
     } catch (error) {
       dispatch({type: 'SET_ERROR', payload: 'Ошибка загрузки смен'});
@@ -34,7 +34,7 @@ const ShiftListScreen: React.FC = () => {
   };
 
   const handleShiftPress = (shift: any) => {
-    navigation.navigate('ShiftDetails', {shift});
+    onShiftPress(shift);
   };
 
   if (state.loading) {
@@ -58,9 +58,7 @@ const ShiftListScreen: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Доступные смены</Text>
-        <Text style={styles.shiftCount}>
-          Найдено: {state.shifts.length} смен
-        </Text>
+        <Text style={styles.shiftCount}>Найдено: {state.shifts.length} смен</Text>
       </View>
       
       <FlatList
@@ -124,4 +122,3 @@ const styles = StyleSheet.create({
 });
 
 export default ShiftListScreen;
-
