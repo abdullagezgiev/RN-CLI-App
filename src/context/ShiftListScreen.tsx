@@ -9,9 +9,9 @@ import {
   Button,
 } from 'react-native';
 import {useShift} from '../context/ShiftContext';
-import ShiftListItem from '../components/ShiftListItem';
+import ShiftListItem from '../context/ShiftListItem';
 import {fetchShifts} from '../services/api';
-import {requestLocationPermission, getCurrentPosition} from '../services/geolocation';
+import {requestLocationPermission, getCurrentPosition} from '../services/geolacation';
 import {useNavigation} from '@react-navigation/native';
 
 const ShiftListScreen: React.FC = () => {
