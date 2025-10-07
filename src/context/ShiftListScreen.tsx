@@ -10,6 +10,7 @@ import {
 import {useShift} from '../context/ShiftContext';
 import ShiftListItem from '../context/ShiftListItem';
 import {fetchShifts} from '../services/api';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 interface Props {
   onShiftPress: (shift: any) => void;
@@ -55,25 +56,27 @@ const ShiftListScreen: React.FC<Props> = ({onShiftPress}) => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Доступные смены</Text>
-        <Text style={styles.shiftCount}>Найдено: {state.shifts.length} смен</Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Доступные смены</Text>
+          <Text style={styles.shiftCount}>Найдено: {state.shifts.length} смен</Text>
+        </View>
+        
+        <FlatList
+          data={state.shifts}
+          keyExtractor={(item, index) => item.id || index.toString()}
+          renderItem={({item}) => (
+            <ShiftListItem shift={item} onPress={() => handleShiftPress(item)} />
+          )}
+          ListEmptyComponent={
+            <View style={styles.centered}>
+              <Text style={styles.emptyText}>Нет доступных смен</Text>
+            </View>
+          }
+        />
       </View>
-      
-      <FlatList
-        data={state.shifts}
-        keyExtractor={(item, index) => item.id || index.toString()}
-        renderItem={({item}) => (
-          <ShiftListItem shift={item} onPress={() => handleShiftPress(item)} />
-        )}
-        ListEmptyComponent={
-          <View style={styles.centered}>
-            <Text style={styles.emptyText}>Нет доступных смен</Text>
-          </View>
-        }
-      />
-    </View>
+    </SafeAreaView>  
   );
 };
 
