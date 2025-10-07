@@ -2,9 +2,9 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { NavigationContainer } from '@react-navigation/native';
-import ShiftListScreen from './src/screens/ShiftListScreen';
-import ShiftDetailsScreen from './src/screens/ShiftDetailsScreen';
-import { ShiftProvider } from './src/screens/ShiftContext';
+import ShiftListScreen from './src/context/ShiftListScreen';
+import ShiftDetailsScreen from './src/context/ShiftDetailsScreen';
+import { ShiftProvider } from './src/context/ShiftContext';
 
 const Stack = createNativeStackNavigator();
 
